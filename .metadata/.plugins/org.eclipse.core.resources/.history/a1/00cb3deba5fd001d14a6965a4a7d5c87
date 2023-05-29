@@ -1,0 +1,46 @@
+package inventario.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import inventario.modelo.Producto;
+
+public class ProductoDao {
+	
+	public static List<Producto> listaProductos = new ArrayList<>();
+	private static Integer llaveSecuencial = 1;
+	static {
+		Producto producto = new Producto();
+		producto.setNombre("camisa");
+		producto.setDescripcion("camisa manga corta");
+		producto.setTamaño("s");
+		producto.setColor("azul");
+		producto.setProveedor("casa ropa");
+		producto.setPrecio(20000f);
+		listaProductos.add(producto);
+	}
+	
+	public void guardar(Producto producto) {
+		producto.setId(llaveSecuencial++);
+		ProductoDao.listaProductos.add(producto);
+	}
+	
+	private void ejecutarRejistro(Producto producto) {
+		
+	}
+
+	public List<Producto> listar() {
+		System.out.println(listaProductos);
+		return ProductoDao.listaProductos;
+	}
+
+	public void eliminar(Integer id) {
+		
+	}
+
+	public void modificar() {
+		
+	}
+	
+}
+

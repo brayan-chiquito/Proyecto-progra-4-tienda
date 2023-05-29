@@ -1,0 +1,83 @@
+package inventario.modelo;
+
+public class Producto {
+
+	private Integer id;
+	private String nombre;
+	private String descripcion;
+	private String tamaño;
+	private String color;
+	private String proveedor;
+	private Integer precio;
+	
+	
+	
+	public Producto(String nombre, String descripcion, String tamaño, String color, String proveedor, Integer precio) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.tamaño = tamaño;
+		this.color = color;
+		this.proveedor = proveedor;
+		this.precio = precio;
+	}
+
+	public Producto(Integer id, String nombre, String descripcion, String tamaño, String color, String proveedor,
+			Integer precio) {
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.tamaño = tamaño;
+		this.color = color;
+		this.proveedor = proveedor;
+		this.precio = precio;
+	}
+	
+	public Producto() {
+	}
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public String getTamaño() {
+		return tamaño;
+	}
+	public void setTamaño(String tamaño) {
+		this.tamaño = tamaño;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public String getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+	public Integer getPrecio() {
+		return precio;
+	}
+	public void setPrecio(Integer precio) {
+		this.precio = precio;
+	}
+	
+	
+}

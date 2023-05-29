@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="inventario.view.Menu"/>
+    <fullyQualifiedTypeName name="inventario.controller.VuelosController"/>
+    <fullyQualifiedTypeName name="inventario.view.ControlDeVuelos"/>
+    <fullyQualifiedTypeName name="java.lang.Float"/>
+    <fullyQualifiedTypeName name="inventario.dao.VuelosDao"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="inventario.controller.ProductoController"/>
+    <fullyQualifiedTypeName name="inventario.dao.ProductoDao"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="java.util.Iterator"/>
+    <fullyQualifiedTypeName name="inventario.modelo.Producto"/>
+</qualifiedTypeNameHistroy>

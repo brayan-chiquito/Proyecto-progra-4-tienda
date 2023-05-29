@@ -1,0 +1,29 @@
+package inventario.controller;
+
+import java.util.List;
+
+import inventario.dao.VuelosDao;
+import inventario.modelo.Producto;
+
+public class VuelosController {
+	
+	private VuelosDao vuelosDao;
+	
+	
+	public int modificar(String origen, String destino, Integer plazastotales, Integer plazasturista, Integer idvuelo) {
+		return vuelosDao.modificar(origen,destino,plazastotales,plazasturista,idvuelo);
+	}
+
+	public int eliminar(Integer id) {
+		return vuelosDao.eliminar(id);
+	}
+
+	public List<Producto> listar() {
+		return vuelosDao.listar();
+	}
+
+    public void guardar(Producto vuelos) {
+		vuelosDao.guardar(vuelos);
+	}
+
+}
