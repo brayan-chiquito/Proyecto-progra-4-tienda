@@ -73,7 +73,7 @@ public class Menu extends JFrame implements ActionListener {
         if (botonPresionado == btnOpcion1) {
         	ControlDeProductos controlDeVuelos = new ControlDeProductos();
         } else if (botonPresionado == btnOpcion2) {
-            
+            ControlDePedidos controlDePedidos = new ControlDePedidos();
         }else if (botonPresionado == btnOpcion3) {
         	ControlDeMoviementos controlDeMoviementos = new ControlDeMoviementos();
         }else if (botonPresionado == btnSalir) {

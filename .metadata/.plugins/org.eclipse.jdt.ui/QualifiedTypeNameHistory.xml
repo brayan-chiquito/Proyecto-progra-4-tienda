@@ -9,8 +9,22 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="inventario.controller.ProductoController"/>
     <fullyQualifiedTypeName name="inventario.dao.ProductoDao"/>
-    <fullyQualifiedTypeName name="java.lang.String"/>
-    <fullyQualifiedTypeName name="java.lang.Integer"/>
     <fullyQualifiedTypeName name="java.util.Iterator"/>
+    <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+    <fullyQualifiedTypeName name="inventario.controller.MovimientoController"/>
+    <fullyQualifiedTypeName name="inventario.dao.MoviminetoDao"/>
+    <fullyQualifiedTypeName name="inventario.view.ControlDeMoviementos"/>
+    <fullyQualifiedTypeName name="inventario.modelo.Movimiento"/>
+    <fullyQualifiedTypeName name="java.time.format.DateTimeFormatter"/>
+    <fullyQualifiedTypeName name="java.time.LocalDateTime"/>
+    <fullyQualifiedTypeName name="java.lang.Object"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="inventario.dao.PedidoDao"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="inventario.view.ControlDePedidos"/>
     <fullyQualifiedTypeName name="inventario.modelo.Producto"/>
+    <fullyQualifiedTypeName name="inventario.controller.PedidoController"/>
+    <fullyQualifiedTypeName name="inventario.modelo.Pedido"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
 </qualifiedTypeNameHistroy>

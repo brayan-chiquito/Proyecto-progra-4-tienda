@@ -1,0 +1,273 @@
+package inventario.view;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Optional;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import inventario.controller.PedidoController;
+import inventario.controller.ProductoController;
+import inventario.modelo.Producto;
+
+public class ControlDePedidos extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+
+    private JLabel labelProveedor, labelProducto, labelCantidad, labelPrecio
+    ;
+    private JTextField textoProveedor, textoCantidad, textoPrecio
+    ;
+    private JComboBox<Producto> comboProducto;
+    private JButton botonGuardar, botonModificar, botonLimpiar, botonEliminar, botonReporte;
+    private JTable tabla;
+    private DefaultTableModel modelo;
+    private PedidoController pedidoController;
+    private ProductoController productoController;
+    public ControlDePedidos() {
+        super("Pedidos");
+        //falta
+        this.productoController = new ProductoController();
+        this.pedidoController = new PedidoController();
+
+        Container container = getContentPane();
+        setLayout(null);
+
+        configurarCamposDelFormulario(container);
+
+        configurarTablaDeContenido(container);
+
+        configurarAccionesDelFormulario();
+    }
+
+    private void configurarTablaDeContenido(Container container) {
+        tabla = new JTable();
+        //falta
+        modelo = (DefaultTableModel) tabla.getModel();
+        modelo.addColumn("id");
+        modelo.addColumn("proveedor");
+        modelo.addColumn("cantidad");
+        modelo.addColumn("precio");
+
+        cargarTabla();
+
+        tabla.setBounds(10, 205, 760, 280);
+
+        botonEliminar = new JButton("Eliminar");
+        botonModificar = new JButton("Modificar");
+        botonReporte = new JButton("Ver Reporte");
+        botonEliminar.setBounds(10, 500, 80, 20);
+        botonModificar.setBounds(100, 500, 80, 20);
+        botonReporte.setBounds(190, 500, 80, 20);
+
+        container.add(tabla);
+        container.add(botonEliminar);
+        container.add(botonModificar);
+        container.add(botonReporte);
+
+        setSize(800, 600);
+        setVisible(true);
+        setLocationRelativeTo(null);
+    }
+
+    private void configurarCamposDelFormulario(Container container) {
+        labelProveedor = new JLabel("nombre");
+        labelProducto = new JLabel("producto");
+        labelCantidad = new JLabel("cantidad");
+        labelPrecio= new JLabel("precio");
+
+        labelProveedor.setBounds(10, 10, 240, 15);
+        labelProducto.setBounds(10, 50, 240, 15);
+        labelCantidad.setBounds(10, 90, 240, 15);
+        labelProveedor.setBounds(10, 130, 240, 15);
+        labelPrecio.setBounds(300,10,240,15);
+
+        labelProveedor.setForeground(Color.BLACK);
+        labelProducto.setForeground(Color.BLACK);
+        labelCantidad.setForeground(Color.BLACK);
+        labelProveedor.setForeground(Color.BLACK);
+        labelPrecio.setForeground(Color.BLACK);
+
+        textoProveedor = new JTextField();
+        comboProducto = new JComboBox<>();
+        comboProducto.addItem(new Producto(0,"elije producto"));
+        
+        
+        textoCantidad = new JTextField();
+        textoPrecio = new JTextField();
+
+        
+        var productos = this.productoController.listar();
+        productos.forEach(producto -> comboProducto.addItem(producto));
+
+
+        textoProveedor.setBounds(10, 25, 265, 20);
+        comboProducto.setBounds(10, 65, 265, 20);
+        textoCantidad.setBounds(300, 65, 265, 20);
+        textoPrecio.setBounds(300, 65, 265, 20);
+
+        botonGuardar = new JButton("Guardar");
+        botonLimpiar = new JButton("Limpiar");
+        botonGuardar.setBounds(10, 175, 80, 20);
+        botonLimpiar.setBounds(100, 175, 80, 20);
+
+        container.add(labelProveedor);
+        container.add(labelProducto);
+        container.add(labelCantidad);
+        container.add(labelPrecio);
+        container.add(comboProducto);
+        container.add(textoProveedor);
+        container.add(textoCantidad);
+        container.add(textoPrecio);
+        container.add(botonGuardar);
+        container.add(botonLimpiar);
+    }
+    //falta 
+    private void configurarAccionesDelFormulario() {
+        botonGuardar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                guardar();
+                limpiarTabla();
+                cargarTabla();
+            }
+        });
+
+        botonLimpiar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                limpiarFormulario();
+            }
+        });
+
+        botonEliminar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                eliminar();
+                limpiarTabla();
+                cargarTabla();
+            }
+        });
+
+        botonModificar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                modificar();
+                limpiarTabla();
+                cargarTabla();
+            }
+        });
+
+        botonReporte.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirReporte();
+            }
+        });
+    }
+
+    private void abrirReporte() {
+        //new ReporteFrameVuelos(this);
+    }
+
+    private void limpiarTabla() {
+        modelo.getDataVector().clear();
+    }
+
+    private boolean tieneFilaElegida() {
+        return tabla.getSelectedRowCount() == 0 || tabla.getSelectedColumnCount() == 0;
+    }
+
+    private void modificar() {
+        if (tieneFilaElegida()) {
+            JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+            return;
+        }
+
+        Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                .ifPresentOrElse(fila -> {
+                	Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
+
+                    String proveedor = (String) modelo.getValueAt(tabla.getSelectedRow(), 1);
+                    Integer catidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
+                    Integer precio = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 4).toString());
+                   
+                    int productoModificado;
+					productoModificado = this.pedidoController.modificar(proveedor, catidad, precio, id);
+					
+					JOptionPane.showMessageDialog(this, productoModificado + " item actualizado con éxito!"); //this, cantidadEliminada + " item actualizado con éxito!")
+                }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+    }
+
+    private void eliminar() {
+        if (tieneFilaElegida()) {
+            JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+            return;
+        }
+
+        Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                .ifPresentOrElse(fila -> {
+                    Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
+                    
+                    int item;
+                    item = this.pedidoController.eliminar(id);
+
+                    modelo.removeRow(tabla.getSelectedRow());
+
+                    JOptionPane.showMessageDialog(this, "Item " + item + " eliminado con éxito!");
+                }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+    }
+
+    private void cargarTabla() {
+    	var producto = this.pedidoController.listar();
+        producto.forEach(productos -> modelo.addRow(
+        		new Object[] {
+        			productos.getId(),
+        			productos.getNombre(),
+        			productos.getDescripcion(),
+        			productos.getTamano(),
+        			productos.getColor(),
+        			productos.getProveedor(),
+        			productos.getPrecio()}));
+    }
+
+    private void guardar() {
+        if (textoProveedor.getText().isBlank() || textoCantidad.getText().isBlank()) {
+            JOptionPane.showMessageDialog(this, "Los campos nombre y descripcion son requeridos.");
+            return;
+        }
+
+        Integer precio;
+
+        try {
+            precio = Integer.parseInt(textoPrecio.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, String
+                    .format("El campo cantidad debe ser numérico dentro del rango %d y %d.", 0, Integer.MAX_VALUE));
+            return;
+        }
+
+        // TODO
+        var producto = new Producto(textoProveedor.getText(),textoCantidad.getText(),textoTamano.getText(),textoColor.getText(),
+        		textoProveedor.getText(),precio);
+        this.pedidoController.guardar(producto);
+
+        JOptionPane.showMessageDialog(this, "Registrado con éxito!");
+
+        this.limpiarFormulario();
+    }
+
+    private void limpiarFormulario() {
+        this.textoProveedor.setText("");
+        this.textoCantidad.setText("");
+        this.textoTamano.setText("");
+        this.textoColor.setText("");
+        this.textoProveedor.setText("");
+        this.textoPrecio.setText("");
+    }
+
+}
