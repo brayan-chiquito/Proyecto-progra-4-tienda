@@ -1,0 +1,56 @@
+package inventario.modelo;
+
+import java.time.LocalDate;
+
+import javax.swing.JTextField;
+
+public class Movimiento {
+	private Integer id;
+	private String tipoString;
+	private Integer producto_id;
+	private Integer cantidad;
+	private LocalDate fecha;
+	
+	
+	
+	public Movimiento(String tipoString, Integer producto_id, Integer cantidad, LocalDate fecha) {
+		super();
+		this.tipoString = tipoString;
+		this.producto_id = producto_id;
+		this.cantidad = cantidad;
+		this.fecha = LocalDate.now();
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getTipoString() {
+		return tipoString;
+	}
+	public void setTipoString(String tipoString) {
+		this.tipoString = tipoString;
+	}
+	
+	public Integer getProducto_id() {
+		return producto_id;
+	}
+	public void setProducto_id(Integer producto_id) {
+		this.producto_id = producto_id;
+	}
+	public Integer getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+	public LocalDate getFecha() {
+		return fecha;
+	}
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+	
+	
+}

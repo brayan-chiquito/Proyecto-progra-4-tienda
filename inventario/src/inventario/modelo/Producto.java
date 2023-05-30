@@ -33,6 +33,13 @@ public class Producto {
 		this.precio = precio;
 	}
 	
+	
+	
+	public Producto(Integer id, String nombre) {
+		this.id = id;
+		this.nombre = nombre;
+	}
+
 	public Producto() {
 	}
 
@@ -78,6 +85,12 @@ public class Producto {
 	public void setPrecio(Integer precio) {
 		this.precio = precio;
 	}
+
+	@Override
+	public String toString() {
+		return this.nombre;
+	}
+	
 	
 	
 }

@@ -1,0 +1,62 @@
+package inventario.dao;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import inventario.modelo.Producto;
+
+public class MoviminetoDao {
+	
+	private static List<Producto> listaProductos = new ArrayList<>();
+	private static Integer llaveSecuencial = 1;
+	static {
+		Producto producto = new Producto();
+		producto.setId(MoviminetoDao.llaveSecuencial++);
+		producto.setNombre("camisa");
+		producto.setDescripcion("camisa manga corta");
+		producto.setTamano("s");
+		producto.setColor("azul");
+		producto.setProveedor("casa ropa");
+		producto.setPrecio(20000);
+		listaProductos.add(producto);
+	}
+	
+	public void guardar(Producto producto) {
+		producto.setId(llaveSecuencial++);
+		MoviminetoDao.listaProductos.add(producto);
+	}
+	
+	public List<Producto> listar() {
+		return MoviminetoDao.listaProductos;
+	}
+
+	public int eliminar(Integer id) {
+		Iterator<Producto> iterator = listaProductos.iterator();
+		while(iterator.hasNext()) {
+			Producto producto = iterator.next();
+			if(producto.getId() == id) {
+				iterator.remove();
+			}
+		}
+		return id;
+	}
+
+	public int modificar(String nombre, String descripcion, String tamano, String color, String proveedor, Integer precio, Integer id) {
+		
+		for(Producto producto: listaProductos) {
+			if(producto.getId() == id) {
+				producto.setNombre(nombre);
+				producto.setDescripcion(descripcion);
+				producto.setTamano(tamano);
+				producto.setColor(color);
+				producto.setProveedor(proveedor);
+				producto.setPrecio(precio);
+				break;
+			}
+		}
+		return id;
+	}
+	
+}
+

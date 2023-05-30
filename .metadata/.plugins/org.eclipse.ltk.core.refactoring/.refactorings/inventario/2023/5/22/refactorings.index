@@ -16,3 +16,13 @@
 1685306103929	Rename field 'textoPlazasDisponibles'
 1685306118313	Rename field 'textoPlazasTurista'
 1685332335497	Rename field 'tamaño'
+1685390447887	Copy compilation unit
+1685390922758	Copy compilation unit
+1685390944698	Copy compilation unit
+1685391091605	Rename field 'comboCategoria'
+1685391427813	Rename field 'labelnombre'
+1685391469163	Rename field 'labelDescripcion'
+1685391497060	Rename field 'labelTamano'
+1685391689546	Rename field 'labelColor'
+1685394096698	Rename field 'listaProductos'
+1685394492896	Rename local variable 'productos'
