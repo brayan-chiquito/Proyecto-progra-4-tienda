@@ -14,7 +14,7 @@ public class MoviminetoDao {
 	static {
 		Movimiento movimiento = new Movimiento();
 		movimiento.setId(llaveSecuencial++);
-		movimiento.setTipoString("entrada");
+		movimiento.setTipoString("Entrada");
 		movimiento.setProducto_id(1);
 		movimiento.setCantidad(20);
 		movimiento.setFecha();
@@ -43,12 +43,12 @@ public class MoviminetoDao {
 
 	public int modificar(Integer cantidad, Integer id) {
 		
-		for(Movimiento movimineto: listaMoviminetos) {
-			if(movimineto.getId() == id) {
-				movimineto.setCantidad(cantidad);
-				break;
-			}
-		}
+//		for(Movimiento movimineto: listaMoviminetos) {
+//			if(movimineto.getId() == id) {
+//				movimineto.setCantidad(cantidad);
+//				break;
+//			}
+//		}
 		return id;
 	}
 	

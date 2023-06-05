@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -51,7 +52,12 @@ public class ControlDePedidos extends JFrame {
     }
 
     private void configurarTablaDeContenido(Container container) {
-        tabla = new JTable();
+    	tabla = new JTable() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return row != 0; // La fila de cabecera no es editable
+            }
+        };
         //falta
         modelo = (DefaultTableModel) tabla.getModel();
         modelo.addColumn("id");
@@ -62,8 +68,15 @@ public class ControlDePedidos extends JFrame {
 
         cargarTabla();
 
-        tabla.setBounds(10, 205, 760, 280);
+        tabla.setModel(modelo);
 
+        tabla.setTableHeader(null); // Ocultar el encabezado de la tabla
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        
+        
+        tabla.setBounds(10, 205, 760, 280);
+        
+        
         botonEliminar = new JButton("Eliminar");
         botonModificar = new JButton("Modificar");
         botonReporte = new JButton("Ver Reporte");
@@ -71,6 +84,8 @@ public class ControlDePedidos extends JFrame {
         botonModificar.setBounds(100, 500, 80, 20);
         botonReporte.setBounds(190, 500, 80, 20);
 
+        container.add(scrollPane);
+        
         container.add(tabla);
         container.add(botonEliminar);
         container.add(botonModificar);
@@ -82,7 +97,7 @@ public class ControlDePedidos extends JFrame {
     }
 
     private void configurarCamposDelFormulario(Container container) {
-        labelProveedor = new JLabel("provvedor");
+        labelProveedor = new JLabel("proveedor");
         labelProducto = new JLabel("producto");
         labelCantidad = new JLabel("cantidad");
         labelPrecio= new JLabel("precio");
@@ -181,15 +196,14 @@ public class ControlDePedidos extends JFrame {
     }
 
     private void modificar() {
-        if (tieneFilaElegida()) {
+    	if (tieneFilaElegida() || tabla.getSelectedRow() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor, elije un item");
             return;
         }
-
         Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
                 .ifPresentOrElse(fila -> {
+                	
                 	Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
-
                     String proveedor = (String) modelo.getValueAt(tabla.getSelectedRow(), 1);
                     Integer catidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
                     Integer precio = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 4).toString());
@@ -202,7 +216,7 @@ public class ControlDePedidos extends JFrame {
     }
 
     private void eliminar() {
-        if (tieneFilaElegida()) {
+    	if (tieneFilaElegida() || tabla.getSelectedRow() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor, elije un item");
             return;
         }
@@ -221,6 +235,15 @@ public class ControlDePedidos extends JFrame {
     }
 
     private void cargarTabla() {
+    	
+    	modelo.addRow(new Object[] {
+    	        "id",
+    	        "proveedor",
+    	        "producto",
+    	        "cantidad",
+    	        "precio"
+    	    });
+    	
     	var pedidos = this.pedidoController.listar();
         pedidos.forEach(pedido -> modelo.addRow(
         		new Object[] {
@@ -233,13 +256,15 @@ public class ControlDePedidos extends JFrame {
     }
 
     private void guardar() {
-//        if (textoProveedor.getText().isBlank() || textoCantidad.getText().isBlank()) {
-//            JOptionPane.showMessageDialog(this, "Los campos nombre y descripcion son requeridos.");
-//            return;
-//        }
 
         Integer precio;
-
+        var producto = (Producto) comboProducto.getSelectedItem();
+        
+        if (producto.getId() == 0) {
+        	JOptionPane.showMessageDialog(this, "Por favor elije un producto");
+        	return;
+        }
+        
         try {
             precio = Integer.parseInt(textoPrecio.getText());
         } catch (NumberFormatException e) {
@@ -258,7 +283,7 @@ public class ControlDePedidos extends JFrame {
         }
 
         // TODO
-        var producto = (Producto) comboProducto.getSelectedItem();
+        
         var pedido = new Pedido(textoProveedor.getText(),cantidad,precio);
         this.pedidoController.guardar(pedido,producto.getId());
 
@@ -273,5 +298,7 @@ public class ControlDePedidos extends JFrame {
         this.textoPrecio.setText("");
         this.comboProducto.setSelectedIndex(0);
     }
+    
+    
 
 }

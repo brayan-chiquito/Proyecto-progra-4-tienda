@@ -54,7 +54,12 @@ public class ControlDeMoviementos extends JFrame {
     }
 
     private void configurarTablaDeContenido(Container container) {
-        tabla = new JTable();
+    	tabla = new JTable() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return row != 0; // La fila de cabecera no es editable
+            }
+        };
         //falta
         modelo = (DefaultTableModel) tabla.getModel();
         modelo.addColumn("id");
@@ -179,25 +184,27 @@ public class ControlDeMoviementos extends JFrame {
     }
 
     private void modificar() {
-        if (tieneFilaElegida()) {
-            JOptionPane.showMessageDialog(this, "Por favor, elije un item");
-            return;
-        }
-
-        Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
-                .ifPresentOrElse(fila -> {
-                	Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
-                    Integer cantidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
-                    
-                    int productoModificado;
-					productoModificado = this.movimientoController.modificar(cantidad, id);
-					
-					JOptionPane.showMessageDialog(this, productoModificado + " item actualizado con éxito!"); //this, cantidadEliminada + " item actualizado con éxito!")
-                }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+    	JOptionPane.showMessageDialog(this, "No se puede modificar");
+//    	if (tieneFilaElegida() || tabla.getSelectedRow() == 0) {
+//            JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+//            return;
+//        }
+//
+//        Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+//                .ifPresentOrElse(fila -> {
+//                	Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
+//                	Integer idProducto = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 2).toString());
+//                    Integer cantidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
+//                    
+//                    int productoModificado;
+//					productoModificado = this.movimientoController.modificar(cantidad, id);
+//					
+//					JOptionPane.showMessageDialog(this, "Item " + productoModificado + " actualizado con éxito!");
+//                }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
     }
 
     private void eliminar() {
-        if (tieneFilaElegida()) {
+    	if (tieneFilaElegida() || tabla.getSelectedRow() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor, elije un item");
             return;
         }
@@ -205,9 +212,17 @@ public class ControlDeMoviementos extends JFrame {
         Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
                 .ifPresentOrElse(fila -> {
                     Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
+                    String tipo = (String) modelo.getValueAt(tabla.getSelectedRow(), 1);
+                    Integer idProducto = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 2);
+                    Integer cantidad = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 3);
                     
                     int item;
-                    item = this.movimientoController.eliminar(id);
+                    item = this.movimientoController.eliminar(id, idProducto, cantidad, tipo);
+                    
+                    if(item == 0) {
+                    	JOptionPane.showMessageDialog(this, "No se puede realizar la eliminacion, cantidad supera el stock");
+                    	return;
+                    }
 
                     modelo.removeRow(tabla.getSelectedRow());
 
@@ -216,6 +231,15 @@ public class ControlDeMoviementos extends JFrame {
     }
 
     private void cargarTabla() {
+    	
+    	modelo.addRow(new Object[] {
+    			"id",
+    	        "tipo",
+    	        "producto id",
+    	        "cantidad",
+    	        "fecha"
+    	    });
+    	
     	var movimientos = this.movimientoController.listar();
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
@@ -234,13 +258,20 @@ public class ControlDeMoviementos extends JFrame {
     }
 
     private void guardar() {
-//        if (textoNombre.getText().isBlank() || textoDescripcion.getText().isBlank()) {
-//            JOptionPane.showMessageDialog(this, "Los campos nombre y descripcion son requeridos.");
-//            return;
-//        }
+        
 
         var producto = (Producto) comboProducto.getSelectedItem();
         var tipo = (Object)comboTipo.getSelectedItem();
+        
+        if (tipo == "Elige un Tipo") {
+            JOptionPane.showMessageDialog(this, "Por favor elije un tipo");
+            return;
+        }
+        if (producto.getId() == 0) {
+        	JOptionPane.showMessageDialog(this, "Por favor elije un producto");
+        	return;
+        }
+    
         
         Integer cantidad;
         try {
@@ -253,9 +284,14 @@ public class ControlDeMoviementos extends JFrame {
 
         // TODO
         var movimiento = new Movimiento(cantidad);
-        this.movimientoController.guardar(tipo.toString(),producto.getId(),movimiento);
-
-        JOptionPane.showMessageDialog(this, "Registrado con éxito!");
+        boolean guardado = this.movimientoController.guardar(tipo.toString(),producto.getId(),movimiento);
+        
+        if(guardado == true) {
+        	JOptionPane.showMessageDialog(this, "Registrado con éxito!");
+        }else {
+        	JOptionPane.showMessageDialog(this, "Cantidad de salida supera existencias!");
+		}
+        
 
         this.limpiarFormulario();
     }

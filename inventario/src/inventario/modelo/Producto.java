@@ -9,17 +9,17 @@ public class Producto {
 	private String color;
 	private String proveedor;
 	private Integer precio;
-	
+	private Integer cantidad;
 	
 	
 	public Producto(String nombre, String descripcion, String tamano, String color, String proveedor, Integer precio) {
-		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.tamano = tamano;
 		this.color = color;
 		this.proveedor = proveedor;
 		this.precio = precio;
+		this.cantidad = 0;
 	}
 
 	public Producto(Integer id, String nombre, String descripcion, String tamano, String color, String proveedor,
@@ -84,6 +84,13 @@ public class Producto {
 	}
 	public void setPrecio(Integer precio) {
 		this.precio = precio;
+	}
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
 	}
 
 	@Override

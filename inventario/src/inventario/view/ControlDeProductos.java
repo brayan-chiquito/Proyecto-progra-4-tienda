@@ -48,7 +48,12 @@ public class ControlDeProductos extends JFrame {
     }
 
     private void configurarTablaDeContenido(Container container) {
-        tabla = new JTable();
+    	tabla = new JTable() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return row != 0; // La fila de cabecera no es editable
+            }
+        };
         //falta
         modelo = (DefaultTableModel) tabla.getModel();
         modelo.addColumn("id");
@@ -58,6 +63,7 @@ public class ControlDeProductos extends JFrame {
         modelo.addColumn("color");
         modelo.addColumn("proveedor");
         modelo.addColumn("precio");
+        modelo.addColumn("cantidad");
 
         cargarTabla();
 
@@ -191,7 +197,7 @@ public class ControlDeProductos extends JFrame {
     }
 
     private void modificar() {
-        if (tieneFilaElegida()) {
+    	if (tieneFilaElegida() || tabla.getSelectedRow() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor, elije un item");
             return;
         }
@@ -216,11 +222,10 @@ public class ControlDeProductos extends JFrame {
     }
 
     private void eliminar() {
-        if (tieneFilaElegida()) {
+    	if (tieneFilaElegida() || tabla.getSelectedRow() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor, elije un item");
             return;
         }
-
         Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
                 .ifPresentOrElse(fila -> {
                     Integer id = (Integer) modelo.getValueAt(tabla.getSelectedRow(), 0);
@@ -235,6 +240,18 @@ public class ControlDeProductos extends JFrame {
     }
 
     private void cargarTabla() {
+    	
+    	modelo.addRow(new Object[] {
+    			"id",
+    	        "nombre",
+    	        "descripcion",
+    	        "tamaño",
+    	        "color",
+    	        "proveedor",
+    	        "precio",
+    	        "cantidad"
+    	    });
+    	
     	var producto = this.productoController.listar();
         producto.forEach(productos -> modelo.addRow(
         		new Object[] {
@@ -244,7 +261,8 @@ public class ControlDeProductos extends JFrame {
         			productos.getTamano(),
         			productos.getColor(),
         			productos.getProveedor(),
-        			productos.getPrecio()}));
+        			productos.getPrecio(),
+        			productos.getCantidad()}));
     }
 
     private void guardar() {

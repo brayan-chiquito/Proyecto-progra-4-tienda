@@ -19,6 +19,7 @@ public class ProductoDao {
 		producto.setColor("azul");
 		producto.setProveedor("casa ropa");
 		producto.setPrecio(20000);
+		producto.setCantidad(20);
 		listaProductos.add(producto);
 	}
 	
@@ -58,5 +59,26 @@ public class ProductoDao {
 		return id;
 	}
 	
+	public void stockIn(Integer id, Integer cantidad) {
+		for(Producto producto: listaProductos) {
+			if(producto.getId() == id) {
+				producto.setCantidad(producto.getCantidad() + cantidad);
+				break;
+			}
+		}
+	}
+	
+	public boolean stockOut(Integer id, Integer cantidad) {
+		for(Producto producto: listaProductos) {
+			if(producto.getId() == id) {
+				if(producto.getCantidad() < cantidad) {
+					return false;
+				}
+				producto.setCantidad(producto.getCantidad() - cantidad);
+				break;
+			}
+		}
+		return true;
+	}
 }
 
